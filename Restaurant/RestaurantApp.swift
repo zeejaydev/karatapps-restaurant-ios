@@ -10,10 +10,10 @@ import SwiftData
 
 @main
 struct RestaurantApp: App {
+    @State private var appVM: AppVM = AppVM()
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
+        let schema = Schema([])
+        
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
@@ -22,11 +22,19 @@ struct RestaurantApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-
+    
+//    init() {
+//        Thread.sleep(forTimeInterval: 2)
+//    }
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        LaunchScreen {
+            LoadingLaunch()
+        } rootContent: {
+            AppRootView()
+                .modelContainer(sharedModelContainer)
+                .environment(appVM)
         }
-        .modelContainer(sharedModelContainer)
+
     }
 }

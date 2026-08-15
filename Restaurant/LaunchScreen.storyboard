@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="25095" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="25070"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenBG" translatesAutoresizingMaskIntoConstraints="NO" id="595-71-37j">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <view alpha="0.90000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8I-6g-Oj8">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <color key="backgroundColor" name="BGColor"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" name="BGColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="I8I-6g-Oj8" secondAttribute="trailing" id="QPL-k4-wji"/>
+                            <constraint firstItem="595-71-37j" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Qs2-Y4-cAi"/>
+                            <constraint firstItem="I8I-6g-Oj8" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Sqh-b7-qE6"/>
+                            <constraint firstItem="595-71-37j" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Sv0-0Z-RGI"/>
+                            <constraint firstAttribute="bottom" secondItem="595-71-37j" secondAttribute="bottom" id="XAg-Gd-IC3"/>
+                            <constraint firstAttribute="trailing" secondItem="595-71-37j" secondAttribute="trailing" id="fR4-1d-a5V"/>
+                            <constraint firstAttribute="bottom" secondItem="I8I-6g-Oj8" secondAttribute="bottom" id="iPp-ES-Nrq"/>
+                            <constraint firstItem="I8I-6g-Oj8" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="wSv-xE-FAh"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="LaunchScreenBG" width="440" height="956"/>
+        <namedColor name="BGColor">
+            <color red="0.88599997758865356" green="0.9100000262260437" blue="0.94099998474121094" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
