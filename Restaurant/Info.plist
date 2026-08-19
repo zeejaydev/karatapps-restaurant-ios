@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>API_BASE_URL</key>
+	<string>$(API_BASE_URL)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BricolageGrotesque_72pt-ExtraBold.ttf</string>
+		<string>Inter_18pt-Bold.ttf</string>
+		<string>Inter_28pt-ExtraBold.ttf</string>
+		<string>Inter_18pt-SemiBold.ttf</string>
+		<string>Inter_18pt-Regular.ttf</string>
+		<string>Inter_18pt-Light.ttf</string>
+		<string>Inter_18pt-Medium.ttf</string>
+		<string>BricolageGrotesque-Bold.ttf</string>
+	</array>
+</dict>
 </plist>

@@ -15,7 +15,7 @@ final class NetworkService {
         case put = "PUT"
         case delete = "DELETE"
     }
-    private let baseUrl = Configuration.apiBaseURL
+    private let baseUrl = Configuration.apiBaseURL.absoluteString
     var token: String?
    
     init(token: String? = nil) {

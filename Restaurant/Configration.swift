@@ -24,16 +24,14 @@ enum AppEnvironment {
 }
 
 struct Configuration {
-    static var apiBaseURL: String {
-        switch AppEnvironment.current {
-        case .development:
-            return "http://192.168.77.177:81/api"
-        case .staging:
-            return ""
-        case .production:
-            return ""
-        }
-    }
+    static func value(_ key: String) -> String {
+               guard let v = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
+                   fatalError("Missing Info.plist key \(key)")
+               }
+               return v
+           }
+    
+    static let apiBaseURL = URL(string: value("API_BASE_URL"))!
 
 //    static var socketURL: String {
 //        switch AppEnvironment.current {

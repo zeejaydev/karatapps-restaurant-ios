@@ -23,17 +23,35 @@ struct RestaurantApp: App {
         }
     }()
     
-//    init() {
+    init() {
 //        Thread.sleep(forTimeInterval: 2)
-//    }
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            .font: UIFont(name: "Inter18pt-SemiBold", size: 17)!
+        ]
+        appearance.largeTitleTextAttributes = [
+            .font: UIFont(name: "Inter18pt-Bold", size: 34)!
+        ]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+
+        UITabBarItem.appearance().setTitleTextAttributes(
+            [.font: UIFont(name: "Inter18pt-Medium", size: 12)!], for: .normal
+        )
+    }
     
     var body: some Scene {
         LaunchScreen {
             LoadingLaunch()
         } rootContent: {
-            AppRootView()
-                .modelContainer(sharedModelContainer)
-                .environment(appVM)
+            ZStack {
+                Color.BG.ignoresSafeArea()
+                AppRootView()
+                    .background(Color.BG.ignoresSafeArea())
+                    .modelContainer(sharedModelContainer)
+                    .environment(appVM)
+                    .environment(\.font, .appBody)
+            }
         }
 
     }

@@ -19,7 +19,8 @@ struct LoadingLaunch: View {
             Color.BG.opacity(0.9)
 
             Text("My Restaurant")
-                .font(.title.bold())
+                .font(.appDisplay)
+                
         }
         .clipped()
         .ignoresSafeArea()

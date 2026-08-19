@@ -10,14 +10,19 @@ import SwiftUI
 struct AppRootView: View {
     @Environment(AppVM.self) private var appVM
     @Environment(\.dismissSplash) private var dismissSplash
+    @State private var continueWithoutUser: Bool = false
     
     var body: some View {
-        Group {
+       Group {
            switch appVM.phase {
            case .loading:
                Color.BG.ignoresSafeArea()
            case .ready:
-               MainTabView()
+               if appVM.user || continueWithoutUser {
+                   MainTabView()
+               } else {
+                   IntroView(continueWithoutUser: $continueWithoutUser)
+               }
            case .failed:
                Text("error")
            }
