@@ -37,6 +37,7 @@ extension Font {
         switch weight {
         case .black: name = "BricolageGrotesque72pt-ExtraBold"
         case .bold: name = "BricolageGrotesque-Bold"
+        case .semibold: name = "BricolageGrotesque24pt-SemiBold"
         default: name = "BricolageGrotesque-Bold"
         }
         return .custom(name,size: size, relativeTo: releativeTo)

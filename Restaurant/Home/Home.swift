@@ -13,7 +13,7 @@ struct Home: View {
     @State var viewModel: HomeVM
     
     var body: some View {
-        Group {
+        Group   {
             if let homeData = appVM.homeData {
                 ScrollView(.vertical, showsIndicators: false) {
                     KFImage(URL(string:homeData.heroImageUrl))
@@ -42,15 +42,7 @@ struct Home: View {
                             PromoCardView(promo: promo)
                         }
                         
-                        if homeData.recentOrders.isEmpty {
-                            HStack {
-                                Text("No recent orders")
-                                    .font(.inter(14, weight: .semibold))
-                            }
-                            .frame(maxWidth: .infinity)
-                        } else {
-                            RecentOrdersSection(homeData.recentOrders)
-                        }
+                        RecentOrdersSection(homeData.recentOrders)
                         
                         RewardsSection(homeData.rewards)
                     }
@@ -113,48 +105,54 @@ struct Home: View {
             Text("Recent Orders")
                 .font(.inter(18, weight: .bold))
                 .padding(.leading)
-            
-            ScrollView(.horizontal) {
-                LazyHStack {
-                    ForEach(recentOrders) { order in
-                        VStack(spacing: 0) {
-                            KFImage(URL(string: order.imageUrl))
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 260, height: 140)
-                                .clipped()
-                                .clipShape(
-                                    UnevenRoundedRectangle(
-                                        topLeadingRadius: 16,
-                                        topTrailingRadius: 16
+            if recentOrders.isEmpty {
+                Text("No recent orders")
+                    .font(.inter(14, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            } else {
+                ScrollView(.horizontal) {
+                    LazyHStack {
+                        ForEach(recentOrders) { order in
+                            VStack(spacing: 0) {
+                                KFImage(URL(string: order.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 260, height: 140)
+                                    .clipped()
+                                    .clipShape(
+                                        UnevenRoundedRectangle(
+                                            topLeadingRadius: 16,
+                                            topTrailingRadius: 16
+                                        )
                                     )
-                                )
-                            
-                            VStack(alignment: .leading) {
-                                Text(order.title)
-                                    .font(.inter(16, weight: .semibold))
-                                Text(order.title)
-                                    .font(.inter(13))
-                                    .foregroundStyle(.placeholder)
-                                Text(order.total / 100, format: .currency(code: "USD"))
-                                    .font(.inter(13, weight: .semibold))
-                                    .padding(.top, 4)
+                                
+                                VStack(alignment: .leading) {
+                                    Text(order.title)
+                                        .font(.inter(16, weight: .semibold))
+                                    Text(order.title)
+                                        .font(.inter(13))
+                                        .foregroundStyle(.placeholder)
+                                    Text(order.total / 100, format: .currency(code: "USD"))
+                                        .font(.inter(13, weight: .semibold))
+                                        .padding(.top, 4)
+                                }
+                                .padding()
+                                .frame(maxWidth: 260, alignment: .leading)
+                                
                             }
-                            .padding()
-                            .frame(maxWidth: 260, alignment: .leading)
-
-                        }
-                        .frame(width: 260)
-                        .background {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(.surface)
-                                .shadow(radius: 1)
+                            .frame(width: 260)
+                            .background {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.surface)
+                                    .shadow(radius: 1)
+                            }
                         }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
         }
     }
     
@@ -165,36 +163,43 @@ struct Home: View {
                 .font(.inter(18, weight: .bold))
                 .padding(.leading)
             
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack {
-                    ForEach(rewards, id: \.id) { reward in
-                        VStack {
-                            KFImage(URL(string: reward.imageUrl))
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 260, height: 72)
-                                .clipped()
-                            
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(reward.title)
-                                    .font(.inter(16, weight: .semibold))
+            if rewards.isEmpty {
+                Text("No rewards available")
+                    .font(.inter(14, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack {
+                        ForEach(rewards, id: \.id) { reward in
+                            VStack {
+                                KFImage(URL(string: reward.imageUrl))
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 260, height: 72)
+                                    .clipped()
                                 
-                                Text(reward.description)
-                                    .font(.inter(13))
-                                    .foregroundStyle(.placeholder)
-                                
-                                ProgressView(value: 60, total: 100)
-                                    .tint(.brandPrimary)
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(reward.title)
+                                        .font(.inter(16, weight: .semibold))
+                                    
+                                    Text(reward.description)
+                                        .font(.inter(13))
+                                        .foregroundStyle(.placeholder)
+                                    
+                                    ProgressView(value: 60, total: 100)
+                                        .tint(.brandPrimary)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .background(.surface)
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(radius: 1)
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .shadow(radius: 1)
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
         }
         .padding(.bottom)

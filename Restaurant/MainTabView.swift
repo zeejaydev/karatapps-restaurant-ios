@@ -33,6 +33,7 @@ struct MainTabView: View {
     ///so i only rerender the changed value instead of the whole object
     @Environment(AppVM.self) private var appVM
     @State var activeTab: AppTabs = .home
+    @State private var cartVM: CartVM = CartVM()
     
     var body: some View {
         TabView(selection: $activeTab) {
@@ -51,7 +52,8 @@ struct MainTabView: View {
                 NavigationStack{
                     ZStack {
                         Color.BG.ignoresSafeArea()
-                        Text("Menu")
+                        Menu()
+                            .toolbar(.hidden, for: .navigationBar)
                     }
                 }
             } label: {
@@ -80,6 +82,8 @@ struct MainTabView: View {
                 Image(systemName: AppTabs.profile.symbol)
             }
         }
+        .environment(appVM)
+        .environment(cartVM)
         .toolbarBackground(Color.BG, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
         .toolbarBackground(Color.BG, for: .navigationBar)

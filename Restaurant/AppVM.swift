@@ -11,22 +11,39 @@ import Observation
 @MainActor
 @Observable
 public final class AppVM {
+    let netwrokService: NetworkService = NetworkService.shared
     var user: Bool = false
     var phase: Phase = .loading
     var homeData: HomeData?
-
+    var locations: [RestaurantLocation] = []
+    var menuCategories: [FoodMenuCategory] = []
+    
     func load() async {
+        ///Get locations
         do {
-            // Run independent calls in parallel
-//            async let config = APIClient.shared.fetchAppConfig()
-//            async let user = APIClient.shared.fetchCurrentUser()
-//            async let menu = APIClient.shared.fetchMenu()
-//
-//            let (cfg, usr, mnu) = try await (config, user, menu)
-
-            // Stash into your stores/environment objects here
-//            AppState.shared.apply(config: cfg, user: usr, menu: mnu)
-            print(Configuration.apiBaseURL)
+            locations = try await netwrokService.apiCall(
+                method: .get,
+                route: "/locations",
+                responseType: [RestaurantLocation].self
+            )
+            
+            ///Get menu categories for location
+            if let locationId = locations.first?.posLocationId {
+                menuCategories = try await netwrokService.apiCall(
+                    method: .get,
+                    route: "/\(locationId)/categories",
+                    responseType: [FoodMenuCategory].self
+                ).filter { $0.id == 22 }
+                
+            }
+        } catch {
+            print(error)
+            phase = .failed
+            return
+        }
+        
+        ///Get home data
+        do {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.homeData = HomeData(
                     heroImageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVyZ2Vyc3xlbnwwfHwwfHx8MA%3D%3D",
@@ -42,6 +59,7 @@ public final class AppVM {
                 self.phase = .ready
             }
         } catch {
+            print(error)
             phase = .failed
         }
     }

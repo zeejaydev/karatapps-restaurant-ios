@@ -25,13 +25,14 @@ enum AppEnvironment {
 
 struct Configuration {
     static func value(_ key: String) -> String {
-               guard let v = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
-                   fatalError("Missing Info.plist key \(key)")
-               }
-               return v
-           }
+        guard let v = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
+           fatalError("Missing Info.plist key \(key)")
+        }
+        return v
+    }
     
     static let apiBaseURL = URL(string: value("API_BASE_URL"))!
+    static let brandId = URL(string: value("BRAND"))!
 
 //    static var socketURL: String {
 //        switch AppEnvironment.current {

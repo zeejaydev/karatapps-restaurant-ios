@@ -16,6 +16,7 @@ final class NetworkService {
         case delete = "DELETE"
     }
     private let baseUrl = Configuration.apiBaseURL.absoluteString
+    private let brandIdentifier = Configuration.brandId.absoluteString
     var token: String?
    
     init(token: String? = nil) {
@@ -41,6 +42,7 @@ final class NetworkService {
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.setValue(brandIdentifier, forHTTPHeaderField: "X-Brand")
         request.setValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")
@@ -86,6 +88,7 @@ final class NetworkService {
         }
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
+        request.setValue(brandIdentifier, forHTTPHeaderField: "X-Brand")
         request.setValue("Bearer \(token ?? "")", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")

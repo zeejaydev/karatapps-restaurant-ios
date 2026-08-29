@@ -4,8 +4,11 @@
 <dict>
 	<key>API_BASE_URL</key>
 	<string>$(API_BASE_URL)</string>
+	<key>BRAND</key>
+	<string>$(X_BRAND)</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>BricolageGrotesque_24pt-SemiBold.ttf</string>
 		<string>BricolageGrotesque_72pt-ExtraBold.ttf</string>
 		<string>Inter_18pt-Bold.ttf</string>
 		<string>Inter_28pt-ExtraBold.ttf</string>

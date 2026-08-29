@@ -24,7 +24,9 @@ struct AppRootView: View {
                    IntroView(continueWithoutUser: $continueWithoutUser)
                }
            case .failed:
-               Text("error")
+               Text("Sorry, something went wrong, while loading initial data.")
+                   .padding()
+                   .multilineTextAlignment(.center)
            }
         }
         .onChange(of: appVM.phase) { _, phase in

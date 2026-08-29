@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "map-pin.png",
+      "filename" : "location_on_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "location_on_24dp_C7FF00_FILL0_wght400_GRAD0_opsz24.svg",
       "idiom" : "universal"
     }
   ],
