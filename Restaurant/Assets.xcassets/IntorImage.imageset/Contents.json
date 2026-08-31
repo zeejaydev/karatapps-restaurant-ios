@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "IntroImage.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "intro2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "intro3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Regular-5-scaled.jpeg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

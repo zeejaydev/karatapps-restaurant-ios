@@ -20,6 +20,7 @@ extension Font {
         let name: String
         switch weight {
         case .light: name = "Inter18pt-Light"
+        case .medium: name = "Inter18pt-Medium"
         case .bold: name = "Inter18pt-Bold"
         case .semibold: name = "Inter18pt-SemiBold"
         case .heavy: name = "Inter28pt-ExtraBold"

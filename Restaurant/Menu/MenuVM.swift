@@ -20,8 +20,11 @@ class MenuVM {
         guard categoryItems[categoryId] == nil else { return }
         loadingCategoryItems = true
         do {
-            let items = try await networkService.apiCall(route: "/\(categoryId)/items", responseType: [FoodMenuItem].self)
-            categoryItems[categoryId] = items
+            let items = try await networkService.apiCall(
+                route: "/\(categoryId)/items",
+                responseType: [FoodMenuItem].self
+            )
+            categoryItems[categoryId] = items.sorted { $0.sortOrder < $1.sortOrder }
         } catch {
             
         }

@@ -33,8 +33,7 @@ public final class AppVM {
                     method: .get,
                     route: "/\(locationId)/categories",
                     responseType: [FoodMenuCategory].self
-                ).filter { $0.id == 22 }
-                
+                ).sorted { $0.sortOrder < $1.sortOrder }
             }
         } catch {
             print(error)
@@ -46,14 +45,14 @@ public final class AppVM {
         do {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.homeData = HomeData(
-                    heroImageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVyZ2Vyc3xlbnwwfHwwfHx8MA%3D%3D",
+                    heroImageUrl: "https://olo-images-live.imgix.net/c9/c9f0c54177cd46aa98b8b6a827beee89.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=7191284232c6183463f8a207b99eefa1",
                     recentOrders: [],
                     rewards: [],
                     promo: HomeData.Promo(
                         title: "20% OFF",
-                        description: "All Pizzas",
-                        imageUrl: "https://images.unsplash.com/photo-1700760934249-93efbb574d23?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                        promoCode: "PIZ26"
+                        description: "Regular Teriyaki Chicken & Katsu Chicken",
+                        imageUrl: "https://olo-images-live.imgix.net/b3/b3b22223be7744bf97f9345f4fa0a058.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=2d197603c81b30290cb455adb586bc9f",
+                        promoCode: "TERI26"
                     ),
                 )
                 self.phase = .ready
@@ -95,7 +94,7 @@ struct HomeData {
     
     static var mock: HomeData {
         HomeData(
-            heroImageUrl: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVyZ2Vyc3xlbnwwfHwwfHx8MA%3D%3D",
+            heroImageUrl: "https://olo-images-live.imgix.net/c9/c9f0c54177cd46aa98b8b6a827beee89.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=7191284232c6183463f8a207b99eefa1",
             recentOrders: [
                 RecentOrderCard(
                     id: 1,
@@ -123,9 +122,9 @@ struct HomeData {
             ],
             promo: HomeData.Promo(
                 title: "20% OFF",
-                description: "All Pizzas",
-                imageUrl: "https://images.unsplash.com/photo-1700760934249-93efbb574d23?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                promoCode: "PIZ26"
+                description: "Regular Teriyaki Chicken & Katsu Chicken",
+                imageUrl: "https://olo-images-live.imgix.net/b3/b3b22223be7744bf97f9345f4fa0a058.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=2d197603c81b30290cb455adb586bc9f",
+                promoCode: "TERI26"
             ),
         )
     }

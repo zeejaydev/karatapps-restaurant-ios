@@ -85,9 +85,9 @@ struct Home: View {
                 )
                 .cacheMemoryOnly()
                 .resizable()
-                .clipShape(UnevenRoundedRectangle(bottomTrailingRadius: 16,topTrailingRadius: 16))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .scaledToFit()
-                
+                .padding(.trailing)
             }
             .frame(maxWidth: .infinity, minHeight: 140, maxHeight: 140)
             .background {

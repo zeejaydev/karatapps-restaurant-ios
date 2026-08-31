@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "HeroImg.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "HeroImg2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "HeroImg3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Regular-4-scaled.jpeg",
+      "idiom" : "universal"
     }
   ],
   "info" : {

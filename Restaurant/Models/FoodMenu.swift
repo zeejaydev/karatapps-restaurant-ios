@@ -28,23 +28,23 @@ struct FoodMenuItem: Codable, Identifiable {
     }
     
     static let mock: Self = .init(
-        id: 83,
+        id: 65,
         brandLocationId: 1,
         sortOrder: 0,
         stockCount: 0,
-        price: 1899,
+        price: 1429,
         cost: 0,
-        name: "New Yorker Pizza",
-        posItemId: "F4QD4XAN4S14Y",
+        name: "Best Seller",
+        posItemId: "K6D80TC806XKG",
         isAvailable: true,
         isAgeRestricted: false,
         enabledOnline: true,
         isHidden: false,
-        onlineName: "Shrimp Special",
-        description: "Double smash organic beef patties, aged cheddar cheese, charred onions, and fresh house-made garlic truffle aioli on a soft toasted brioche bun.",
+        onlineName: "Best Seller",
+        description: "Regular Teriyaki Chicken - 3 pieces of chicken marinated and drizzled with our house made Teri Sauce; served on a bed of cabbage with 2 scoops of rice, 1 salad choice, and 2 sauce cups.  For sides customization, please call and order from the store.",
         altName: nil,
         images: [
-            .init(url:"https://images.unsplash.com/photo-1571091718767-18b5b1457add?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVyZ2Vyc3xlbnwwfHwwfHx8MA%3D%3D")
+            .init(url:"https://olo-images-live.imgix.net/c9/c9f0c54177cd46aa98b8b6a827beee89.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=7191284232c6183463f8a207b99eefa1")
         ]
     )
 }

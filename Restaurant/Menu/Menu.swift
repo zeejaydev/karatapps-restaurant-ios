@@ -16,8 +16,8 @@ struct Menu: View {
     @Namespace private var animation
     
     private let gridCols: [GridItem] = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 0)
+        GridItem(.flexible(), spacing: 12, alignment: .top),
+        GridItem(.flexible(), spacing: 0, alignment: .top)
     ]
     
     var body: some View {
@@ -46,8 +46,10 @@ struct Menu: View {
 
                     Spacer()
 
-                    Button {
-                        print("test")
+                    NavigationLink {
+                        CartView()
+                            .environment(menuVM)
+                            .environment(cartVM)
                     } label: {
                         Image(systemName: "cart")
                             .resizable()
@@ -64,6 +66,7 @@ struct Menu: View {
                             }
                     }
                     .buttonStyle(.plain)
+                    .navigationTitle("Your Order")
                 }
                 ///Categories
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -105,7 +108,8 @@ struct Menu: View {
                 }
             }
         }
-        .onChange(of: appVM.menuCategories.count) { _ , _ in
+        .onAppear {
+            print("\(appVM.menuCategories.count)")
             selectedCategory = appVM.menuCategories.first?.id
         }
         .onChange(of: selectedCategory) { _ , newValue in

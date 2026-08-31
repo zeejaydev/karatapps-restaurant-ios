@@ -16,6 +16,7 @@ struct IntroView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("My Restaurant")

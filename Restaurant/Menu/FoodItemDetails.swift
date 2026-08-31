@@ -12,12 +12,39 @@ struct FoodItemDetails: View {
     @Environment(MenuVM.self) var menuVM
     @Environment(CartVM.self) var cartVM
     @Environment(\.dismiss) private var dismiss
+    private let cartItemID: UUID?
     var foodItem: FoodMenuItem
     ///View States
-    @State private var quantity: Int = 1
     @State private var modifiers: [ModifierGroup] = []
     @State var itemImageUrl:URL? = nil
-    @State var selectedModifiers: [String:Modifier] = [:]
+    @State private var quantity: Int
+    @State private var selectedModifiers: [String: Modifier]
+    
+    private var modifierSelectionsAreValid: Bool {
+        modifiers.allSatisfy { group in
+            let count = selectedCount(in: group)
+            let meetsMinimum = count >= group.minRequired
+            let meetsMaximum = group.maxAllowed.map {
+                $0 <= 0 || count <= $0
+            } ?? true
+            return meetsMinimum && meetsMaximum
+        }
+    }
+    
+    ///Initiation for Add To Cart View
+    init(foodItem: FoodMenuItem) {
+        self.foodItem = foodItem
+        self.cartItemID = nil
+        _quantity = State(initialValue: 1)
+        _selectedModifiers = State(initialValue: [:])
+    }
+    ///Initiation for Edit Cart Item View
+    init(cartItem: CartItem) {
+        self.foodItem = cartItem.foodItem
+        self.cartItemID = cartItem.id
+        _quantity = State(initialValue: cartItem.quantity)
+        _selectedModifiers = State(initialValue: cartItem.selectedModifiers)
+    }
     
     var body: some View {
         VStack {
@@ -117,15 +144,12 @@ struct FoodItemDetails: View {
                                 
                                 LazyVStack(alignment: .leading, spacing: 10) {
                                     ForEach(modifier.modifiers) { modi in
-                                        ModifierRow(
-                                            modi,
-                                            isCheckMark: modifier.minRequired == 0 && modifier.maxAllowed == nil
-                                        )
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .fill(.surfaceElevated)
-                                                .stroke(.border, lineWidth: 1)
-                                        }
+                                        ModifierRow(modi, group: modifier)
+                                            .background {
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .fill(.surfaceElevated)
+                                                    .stroke(.border, lineWidth: 1)
+                                            }
                                     }
                                 }
                             }
@@ -136,14 +160,23 @@ struct FoodItemDetails: View {
                 }
                 
                 Button {
-                    cartVM.addToCart(
-                        item: foodItem,
-                        quantity: quantity,
-                        modifiers: selectedModifiers
-                    )
+                    if let cartItemID {
+                        cartVM.updateCartItem(
+                            id: cartItemID,
+                            quantity: quantity,
+                            modifiers: selectedModifiers
+                        )
+                    } else {
+                        cartVM.addToCart(
+                            item: foodItem,
+                            quantity: quantity,
+                            modifiers: selectedModifiers
+                        )
+                    }
+                    
                     dismiss()
                 } label: {
-                    Text("Add to Cart")
+                    Text(cartItemID == nil ? "Add to Cart" : "Update Cart")
                         .font(.inter(16, weight: .semibold))
                         .padding(.vertical, 12)
                         .padding(.horizontal, 24)
@@ -151,6 +184,8 @@ struct FoodItemDetails: View {
                         .background(.accent,in: RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .disabled(!modifierSelectionsAreValid)
+                .opacity(modifierSelectionsAreValid ? 1 : 0.5)
 
             }
             .frame(maxWidth: .infinity, alignment: .init(horizontal: .leading, vertical: .top))
@@ -164,10 +199,39 @@ struct FoodItemDetails: View {
         }
     }
     
+    private func selectedCount(in group: ModifierGroup) -> Int {
+        group.modifiers.reduce(0) { count, modifier in
+            count + (selectedModifiers[modifier.posModifierId] == nil ? 0 : 1)
+        }
+    }
+    
+    private func toggle(_ modifier: Modifier, in group: ModifierGroup) {
+        let key = modifier.posModifierId
+        let count = selectedCount(in: group)
+        if selectedModifiers[key] != nil {
+            // Don’t go below the required minimum once reached.
+            guard count < group.minRequired ||
+                  count - 1 >= group.minRequired else { return }
+            selectedModifiers.removeValue(forKey: key)
+            return
+        }
+        if let maximum = group.maxAllowed, maximum > 0 {
+            if maximum == 1 {
+                // Single-choice group: replace the previous selection.
+                group.modifiers.forEach {
+                    selectedModifiers.removeValue(forKey: $0.posModifierId)
+                }
+            } else {
+                guard count < maximum else { return }
+            }
+        }
+        selectedModifiers[key] = modifier
+    }
+    
     @ViewBuilder
     func ModifierRow(
         _ modi: Modifier,
-        isCheckMark: Bool = false
+        group: ModifierGroup,
     ) -> some View {
         HStack {
             Text(modi.name)
@@ -175,8 +239,10 @@ struct FoodItemDetails: View {
                 .padding(.horizontal)
                 .padding(.vertical)
             Spacer()
-            if isCheckMark {
-                Toggle(isOn: selectionBinding(for: modi)) {
+//            if isCheckMark {
+                Button {
+                    toggle(modi, in: group)
+                } label: {
                     Image(
                         systemName: selectedModifiers[modi.posModifierId] != nil
                             ? "checkmark.square.fill"
@@ -184,47 +250,46 @@ struct FoodItemDetails: View {
                     )
                     .font(.system(size: 22))
                 }
-                .toggleStyle(.button)
                 .buttonStyle(.plain)
                 .accessibilityLabel("Select \(modi.name)")
                 .padding(.trailing)
-            } else {
-                HStack(spacing: 16) {
-                    Button {
-                        print("sf")
-                    } label: {
-                        Image(systemName: "minus")
-                            .font(.system(size: 14))
-                            .frame(width: 20, height: 20)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .background {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.accent)
-                            .stroke(.border, lineWidth: 1)
-                    }
-                    
-                    Text("0")
-                        .font(.inter(14, weight: .semibold))
-                    
-                    Button {
-                        print("sf")
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.system(size: 14))
-                            .frame(width: 25, height: 25)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .background {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.accent)
-                            .stroke(.border, lineWidth: 1)
-                    }
-                }
-                .padding(.horizontal)
-            }
+//            } else {
+//                HStack(spacing: 16) {
+//                    Button {
+//                        print("sf")
+//                    } label: {
+//                        Image(systemName: "minus")
+//                            .font(.system(size: 14))
+//                            .frame(width: 20, height: 20)
+//                            .contentShape(Rectangle())
+//                    }
+//                    .buttonStyle(.plain)
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 4)
+//                            .fill(.accent)
+//                            .stroke(.border, lineWidth: 1)
+//                    }
+//                    
+//                    Text("0")
+//                        .font(.inter(14, weight: .semibold))
+//                    
+//                    Button {
+//                        print("sf")
+//                    } label: {
+//                        Image(systemName: "plus")
+//                            .font(.system(size: 14))
+//                            .frame(width: 25, height: 25)
+//                            .contentShape(Rectangle())
+//                    }
+//                    .buttonStyle(.plain)
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 4)
+//                            .fill(.accent)
+//                            .stroke(.border, lineWidth: 1)
+//                    }
+//                }
+//                .padding(.horizontal)
+//            }
         }
     }
     
@@ -255,15 +320,15 @@ struct FoodItemDetails: View {
     }
 }
 
-#Preview {
-    @Previewable var item = FoodMenuItem.mock
-    NavigationStack {
-        NavigationLink {
-            FoodItemDetails(foodItem: item)
-        } label: {
-            Text(item.name)
-        }
-    }
-    .environment(MenuVM())
-    .environment(CartVM())
-}
+//#Preview {
+//    @Previewable var item = FoodMenuItem.mock
+//    NavigationStack {
+//        NavigationLink {
+//            FoodItemDetails(foodItem: item)
+//        } label: {
+//            Text(item.name)
+//        }
+//    }
+//    .environment(MenuVM())
+//    .environment(CartVM())
+//}

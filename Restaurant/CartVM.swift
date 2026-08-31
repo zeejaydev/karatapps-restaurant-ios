@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 @MainActor
 @Observable
@@ -15,14 +16,34 @@ class CartVM {
     var itemsCount: Int {
         cart.map({$0.quantity}).reduce(0, +)
     }
+    
     func addToCart(item: FoodMenuItem, quantity: Int, modifiers: [String:Modifier]) {
         let cartItem = CartItem(foodItem: item, quantity: quantity, selectedModifiers: modifiers)
         cart.append(cartItem)
+        print(cart)
     }
     
-    func remobeFromCart(id: UUID) {
-        guard let index = cart.firstIndex(where: { $0.id == id }) else { return }
-        cart.remove(at: index)
+    func updateCartItem(
+        id: UUID,
+        quantity: Int,
+        modifiers: [String: Modifier]
+    ) {
+        guard let index = cart.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        cart[index].quantity = quantity
+        cart[index].selectedModifiers = modifiers
     }
     
+    func removeFromCart(atOffsets offsets: IndexSet) {
+        cart.remove(atOffsets: offsets)
+    }
+    
+    
+    ///Preview
+    func loadMockData() {
+        for _ in 0..<4 {
+            cart.append(CartItem.mock)
+        }
+    }
 }
