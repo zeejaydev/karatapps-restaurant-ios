@@ -47,7 +47,7 @@ struct FoodItemDetails: View {
     }
     
     var body: some View {
-        VStack {
+        ScrollView {
             ///Image
             if let url = itemImageUrl {
                 VStack(alignment: .leading, spacing: 10) {
@@ -64,6 +64,7 @@ struct FoodItemDetails: View {
                     }
                 }
             }
+            
             VStack(alignment: .leading, spacing: 20) {
                 ///Item info
                 VStack(alignment: .leading,spacing: 8) {
@@ -121,36 +122,34 @@ struct FoodItemDetails: View {
                 
                 ///Modifiers
                 if !modifiers.isEmpty {
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 12) {
-                            ForEach(modifiers) { modifier in
-                                HStack(alignment:.center) {
-                                    Text(modifier.modifierGroupName)
-                                        .font(Font.bricolage(16, weight: .semibold))
-                                    
-                                    Spacer()
-                                    
-                                    HStack(alignment: .center, spacing: 10) {
-                                        if modifier.minRequired > 0 {
-                                            Text("Min Required \(modifier.minRequired)")
-                                                .font(.inter(11))
-                                        }
-                                        if let maxAllowed = modifier.maxAllowed, maxAllowed > 0 {
-                                            Text("Max Allowed \(maxAllowed)")
-                                                .font(.inter(11))
-                                        }
+                    LazyVStack(alignment: .leading, spacing: 12) {
+                        ForEach(modifiers) { modifier in
+                            HStack(alignment:.center) {
+                                Text(modifier.modifierGroupName)
+                                    .font(Font.bricolage(16, weight: .semibold))
+                                
+                                Spacer()
+                                
+                                HStack(alignment: .center, spacing: 10) {
+                                    if modifier.minRequired > 0 {
+                                        Text("Min Required \(modifier.minRequired)")
+                                            .font(.inter(11))
+                                    }
+                                    if let maxAllowed = modifier.maxAllowed, maxAllowed > 0 {
+                                        Text("Max Allowed \(maxAllowed)")
+                                            .font(.inter(11))
                                     }
                                 }
-                                
-                                LazyVStack(alignment: .leading, spacing: 10) {
-                                    ForEach(modifier.modifiers) { modi in
-                                        ModifierRow(modi, group: modifier)
-                                            .background {
-                                                RoundedRectangle(cornerRadius: 8)
-                                                    .fill(.surfaceElevated)
-                                                    .stroke(.border, lineWidth: 1)
-                                            }
-                                    }
+                            }
+                            
+                            LazyVStack(alignment: .leading, spacing: 10) {
+                                ForEach(modifier.modifiers) { modi in
+                                    ModifierRow(modi, group: modifier)
+                                        .background {
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .fill(.surfaceElevated)
+                                                .stroke(.border, lineWidth: 1)
+                                        }
                                 }
                             }
                         }

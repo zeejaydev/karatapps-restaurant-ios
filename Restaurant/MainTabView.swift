@@ -41,7 +41,7 @@ struct MainTabView: View {
                 NavigationStack {
                     ZStack {
                         Color.BG.ignoresSafeArea()
-                        Home(viewModel: HomeVM())
+                        Home(viewModel: HomeVM(), activeTab: $activeTab)
                     }
                 }
             } label: {

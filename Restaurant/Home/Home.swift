@@ -11,6 +11,7 @@ import Kingfisher
 struct Home: View {
     @Environment(AppVM.self) var appVM: AppVM
     @State var viewModel: HomeVM
+    @Binding var activeTab: AppTabs
     
     var body: some View {
         Group   {
@@ -31,7 +32,7 @@ struct Home: View {
                                 
                             
                             Button("Order Now") {
-                                print("test")
+                                activeTab = .menu
                             }
                             .buttonStyle(.primary)
                         }
@@ -217,7 +218,7 @@ struct Home: View {
             NavigationStack {
                 ZStack {
                     Color.BG.ignoresSafeArea()
-                    Home(viewModel: HomeVM())
+                    Home(viewModel: HomeVM(), activeTab: $activeTab)
                 }
             }
         } label: {

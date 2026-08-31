@@ -155,11 +155,6 @@ struct CartView: View {
                         .font(.inter(14, weight: .semibold))
                 }
                 
-                if let description = item.foodItem.description, !description.isEmpty {
-                    Text(description)
-                        .font(.inter(12))
-                        .foregroundStyle(.placeholder)
-                }
                 ForEach(Array(item.selectedModifiers.values)) { modifier in
                     Text("+" + modifier.name)
                         .font(.inter(12))
