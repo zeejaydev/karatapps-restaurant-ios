@@ -78,7 +78,7 @@ final class NetworkService {
     }
     
     func apiCall(
-        method: HttpMethod,
+        method: HttpMethod = .get,
         route: String,
         data: Data? = nil,
         contentType: String = "application/json"

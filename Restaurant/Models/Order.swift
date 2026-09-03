@@ -12,3 +12,17 @@ struct OrderType: Codable {
     let label, cloverId: String
     let taxable: Bool
 }
+
+struct OrderPayload: Codable {
+    let items: [OrderPayloadItem]
+    let orderTypeId: String
+    
+    struct OrderPayloadItem: Codable {
+        let id: String
+        let modifiers: [Modifier]
+    }
+    
+    func toData() -> Data? {
+        try? JSONEncoder().encode(self)
+    }
+}

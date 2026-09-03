@@ -13,12 +13,6 @@ struct CartView: View {
     @Environment(MenuVM.self) private var menuVM
     ///View States
     @State private var selectedItemId: UUID?
-    var subTotal: Int {
-        return cartVM.cart.reduce(0) { partialResult, cartItem in
-            partialResult + (cartItem.foodItem.price * cartItem.quantity)
-        }
-    }
-    var tax : Int = 454
     
     var body: some View {
         if cartVM.cart.isEmpty {
@@ -99,7 +93,7 @@ struct CartView: View {
                             .font(.inter(14))
                             .foregroundStyle(.placeholder)
                         Spacer()
-                        Text((Decimal(subTotal) / 100), format: .currency(code: "USD"))
+                        Text((Decimal(cartVM.total.subtotal) / 100), format: .currency(code: "USD"))
                             .font(.inter(14, weight: .medium))
                     }
                     HStack{
@@ -107,7 +101,7 @@ struct CartView: View {
                             .font(.inter(14))
                             .foregroundStyle(.placeholder)
                         Spacer()
-                        Text((Decimal(tax) / 100), format: .currency(code: "USD"))
+                        Text((Decimal(cartVM.total.tax) / 100), format: .currency(code: "USD"))
                             .font(.inter(14, weight: .medium))
                     }
                     Divider()
@@ -117,7 +111,7 @@ struct CartView: View {
                         
                         Spacer()
                         
-                        Text((Decimal(subTotal + tax) / 100), format: .currency(code: "USD"))
+                        Text((Decimal(cartVM.total.total) / 100), format: .currency(code: "USD"))
                             .font(.bricolage(20, weight: .bold))
                     }
                 }

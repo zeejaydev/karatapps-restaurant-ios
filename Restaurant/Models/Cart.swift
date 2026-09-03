@@ -65,3 +65,9 @@ struct CartItem: Identifiable {
         )
     }
 }
+
+struct CartTotal: Codable {
+    let subtotal: Double
+    let tax: Double
+    let total: Double
+}

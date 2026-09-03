@@ -17,6 +17,7 @@ public final class AppVM {
     var homeData: HomeData?
     var locations: [RestaurantLocation] = []
     var menuCategories: [FoodMenuCategory] = []
+    var selectedLocation: RestaurantLocation? = nil
     
     func load() async {
         ///Get locations
@@ -27,8 +28,10 @@ public final class AppVM {
                 responseType: [RestaurantLocation].self
             )
             
+            selectedLocation = locations.first
+            
             ///Get menu categories for location
-            if let locationId = locations.first?.posLocationId {
+            if let locationId = selectedLocation?.posLocationId {
                 menuCategories = try await netwrokService.apiCall(
                     method: .get,
                     route: "/\(locationId)/categories",

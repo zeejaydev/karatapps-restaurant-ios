@@ -88,6 +88,9 @@ struct MainTabView: View {
         .toolbarBackground(.visible, for: .tabBar)
         .toolbarBackground(Color.BG, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .onAppear {
+            cartVM.selectedLocation = appVM.selectedLocation
+        }
     }
 }
 
