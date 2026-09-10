@@ -71,3 +71,7 @@ struct CartTotal: Codable {
     let tax: Double
     let total: Double
 }
+
+struct CustomerInfo: Codable {
+    var firstName, lastName, email, phoneNumber, address: String
+}

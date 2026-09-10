@@ -19,6 +19,8 @@ class CartVM {
         cart.map({$0.quantity}).reduce(0, +)
     }
     var selectedLocation: RestaurantLocation? = nil
+    var placingOrder: Bool = false
+    var orderConfirmation: OrderConfirmation? = nil
     
     func addToCart(item: FoodMenuItem, quantity: Int, modifiers: [String:Modifier]) {
         let cartItem = CartItem(foodItem: item, quantity: quantity, selectedModifiers: modifiers)
@@ -82,6 +84,57 @@ class CartVM {
         } catch {
             print(error)
         }
+    }
+    
+    func placeOrder(
+        cardToken: String,
+        tip: Int,
+        customerInfo: CustomerInfo
+    ) async {
+        guard let locationId = selectedLocation?.posLocationId,
+              let orderTypeId = selectedLocation?.orderTypes.first?.cloverId else {
+            print("Slecting location and order type is required")
+            return
+        }
+        
+        if cart.isEmpty {
+            return print("No items in cart")
+        }
+        
+        placingOrder = true
+        
+        let items = cart.flatMap { cartItem in
+            let item = OrderPayload.OrderPayloadItem(
+                id: cartItem.foodItem.posItemId,
+                modifiers: Array(cartItem.selectedModifiers.values)
+            )
+            return Array(
+                repeating: item,
+                count: max(0, cartItem.quantity)
+            )
+        }
+        
+        let payload: PlaceOderPayload = .init(
+            items: items,
+            orderTypeId: orderTypeId,
+            sourceToken: cardToken,
+            tipAmount: tip,
+            customer: customerInfo
+        )
+        
+        do {
+            let resp = try await networkService.apiCall(
+                method: .post,
+                route: "/orders/\(locationId)/order",
+                data: payload.toData(),
+                responseType: PlaceOrderResp.self
+            )
+            orderConfirmation = .init(paymentId: resp.payment.id, orderId: resp.order.id)
+        } catch {
+            print(error)
+        }
+        
+        placingOrder = false
     }
     
     ///Preview

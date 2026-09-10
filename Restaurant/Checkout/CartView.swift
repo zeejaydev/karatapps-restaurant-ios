@@ -11,6 +11,7 @@ import Kingfisher
 struct CartView: View {
     @Environment(CartVM.self) private var cartVM
     @Environment(MenuVM.self) private var menuVM
+    @Environment(AppVM.self) private var appVM
     ///View States
     @State private var selectedItemId: UUID?
     
@@ -58,7 +59,7 @@ struct CartView: View {
                 .padding(16)
                 .background {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(.surfaceElevated)
+                        .fill(.surface)
                         .stroke(.border, lineWidth: 1)
                 }
                 
@@ -83,7 +84,7 @@ struct CartView: View {
                 }
                 .background {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(.surfaceElevated)
+                        .fill(.surface)
                         .stroke(.border, lineWidth: 1)
                 }
                 ///Total
@@ -115,15 +116,15 @@ struct CartView: View {
                             .font(.bricolage(20, weight: .bold))
                     }
                 }
-                .padding(20)
+                .padding(16)
                 .background {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(.surfaceElevated)
+                        .fill(.surface)
                         .stroke(.border, lineWidth: 1)
                 }
                 
-                Button("Checkout".uppercased()) {
-                    print("test")
+                NavigationLink(value: MenuRoute.checkout) {
+                    Text("Checkout".uppercased())
                 }
                 .buttonStyle(.primary)
             }
@@ -180,6 +181,7 @@ struct CartView: View {
 }
 
 #Preview {
+    @Previewable var appVM: AppVM = AppVM()
     @Previewable var cartVM: CartVM = CartVM()
     
     return NavigationStack {
@@ -188,6 +190,7 @@ struct CartView: View {
             CartView()
                 .environment(MenuVM())
                 .environment(cartVM)
+                .environment(appVM)
         }
     }
     .onAppear {

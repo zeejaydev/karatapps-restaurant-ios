@@ -32,7 +32,10 @@ struct Configuration {
     }
     
     static let apiBaseURL = URL(string: value("API_BASE_URL"))!
-    static let brandId = URL(string: value("BRAND"))!
+    static let brandURL = URL(string: value("BRAND_WEBSITE"))!
+    static let brandId = value("BRAND")
+    static let pakms_key = value("PAKMS_KEY")
+    static let cloverSdkUrl = value("CLOVER_SDK")
 
 //    static var socketURL: String {
 //        switch AppEnvironment.current {

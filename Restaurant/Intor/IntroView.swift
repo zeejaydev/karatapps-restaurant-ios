@@ -11,6 +11,7 @@ struct IntroView: View {
     @Binding var continueWithoutUser: Bool
     
     var body: some View {
+        ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Image(.intor)
                     .resizable()
@@ -29,39 +30,22 @@ struct IntroView: View {
                         .foregroundStyle(.secondary)
                         .minimumScaleFactor(0.5)
                 }
-                VStack {
-                    Button {
+                Spacer()
+                VStack(spacing: 12) {
+                    Button("Sign In") {
                         print("test")
-                    } label: {
-                        Text("Sign In")
-                            .font(.inter(18, weight: .bold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                            .frame(maxWidth: .infinity)
-                            .padding(.horizontal)
-                            .padding(.vertical, 12)
-                            .background(.accent, in: .capsule)
-                            .overlay(Capsule().strokeBorder(.accent, lineWidth: 1))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.primary)
                     
-                    Button {
+                    Button("Continue As Guest") {
                         continueWithoutUser.toggle()
-                    } label: {
-                        Text("Continue As Guest")
-                            .font(.inter(18, weight: .bold))
-                            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                            .frame(maxWidth: .infinity)
-                            .padding(.horizontal)
-                            .padding(.vertical, 12)
-                            .background(.accent, in: .capsule)
-                            .overlay(Capsule().strokeBorder(.accent, lineWidth: 1))
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(.primary)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal)
+            .safeAreaPadding()
         }
+    }
 }
 
 #Preview {
