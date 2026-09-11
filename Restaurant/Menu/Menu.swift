@@ -46,11 +46,7 @@ struct Menu: View {
 
                     Spacer()
 
-                    NavigationLink {
-                        CartView()
-                            .environment(menuVM)
-                            .environment(cartVM)
-                    } label: {
+                    NavigationLink(value: MenuRoute.cart) {
                         Image(systemName: "cart")
                             .resizable()
                             .frame(width: 25, height: 25)
@@ -65,8 +61,8 @@ struct Menu: View {
                                 }
                             }
                     }
-                    .buttonStyle(.plain)
                     .navigationTitle("Your Order")
+                    .buttonStyle(.plain)
                 }
                 ///Categories
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -95,8 +91,11 @@ struct Menu: View {
                            let items = menuVM.categoryItems[selectedCat] {
                             ForEach(items) { item in
                                 NavigationLink {
-                                    FoodItemDetails(foodItem: item)
-                                        .environment(menuVM)
+                                    ZStack {
+                                        Color.BG.ignoresSafeArea()
+                                        FoodItemDetails(foodItem: item)
+                                            .environment(menuVM)
+                                    }
                                 } label: {
                                     FoodItemCard(item)
                                 }
@@ -116,6 +115,22 @@ struct Menu: View {
             if let catId = newValue {
                 Task {
                     await menuVM.loadCategoryItems(categoryId: catId)
+                }
+            }
+        }
+        .navigationDestination(for: MenuRoute.self) { route in
+            ZStack {
+                Color.BG.ignoresSafeArea()
+                switch route {
+                case .cart:
+                    CartView()
+                        .environment(menuVM)
+                        .environment(cartVM)
+                        .environment(appVM)
+                case .checkout:
+                    CheckoutView()
+                        .environment(appVM)
+                        .environment(cartVM)
                 }
             }
         }
@@ -184,8 +199,8 @@ struct Menu: View {
     @Previewable @State var activeTab: AppTabs = .menu
     @Previewable @State var appVM: AppVM = .init()
     @Previewable @State var cartVM: CartVM = .init()
+    @Previewable @State var router = Router()
     
-
     TabView(selection: $activeTab) {
         Tab.init(value: .home) {
             NavigationStack {
@@ -199,7 +214,7 @@ struct Menu: View {
         }
         
         Tab.init(value: .menu) {
-            NavigationStack{
+            NavigationStack(path: $router.path) {
                 ZStack {
                     Color.BG.ignoresSafeArea()
                     Menu()

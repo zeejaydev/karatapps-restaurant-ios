@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 enum AppTabs: String, CaseIterable {
     case home = "Home"
@@ -28,13 +27,25 @@ enum AppTabs: String, CaseIterable {
     }
 }
 
+enum MenuRoute: Hashable {
+    case cart
+    case checkout
+}
+
+@Observable
+final class Router {
+    var path = NavigationPath()
+    func popToRoot() { path = NavigationPath() }
+}
+
 struct MainTabView: View {
     ///using enviroment not enviromentObject becuse I'm using the new observable macro in the appVM
     ///so i only rerender the changed value instead of the whole object
     @Environment(AppVM.self) private var appVM
     @State var activeTab: AppTabs = .home
     @State private var cartVM: CartVM = CartVM()
-    
+    @State private var router = Router()
+
     var body: some View {
         TabView(selection: $activeTab) {
             Tab.init(value: .home) {
@@ -49,7 +60,7 @@ struct MainTabView: View {
             }
             
             Tab.init(value: .menu) {
-                NavigationStack{
+                NavigationStack(path: $router.path) {
                     ZStack {
                         Color.BG.ignoresSafeArea()
                         Menu()
@@ -84,6 +95,7 @@ struct MainTabView: View {
         }
         .environment(appVM)
         .environment(cartVM)
+        .environment(router)
         .toolbarBackground(Color.BG, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
         .toolbarBackground(Color.BG, for: .navigationBar)

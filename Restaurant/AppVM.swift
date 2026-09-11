@@ -45,7 +45,7 @@ public final class AppVM {
         }
         
         ///Get home data
-        do {
+//        do {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.homeData = HomeData(
                     heroImageUrl: "https://olo-images-live.imgix.net/c9/c9f0c54177cd46aa98b8b6a827beee89.png?auto=format%2Ccompress&q=60&cs=tinysrgb&w=1200&h=800&fit=fill&fm=png32&bg=transparent&s=7191284232c6183463f8a207b99eefa1",
@@ -60,10 +60,10 @@ public final class AppVM {
                 )
                 self.phase = .ready
             }
-        } catch {
-            print(error)
-            phase = .failed
-        }
+//        } catch {
+//            print(error)
+//            phase = .failed
+//        }
     }
 }
 

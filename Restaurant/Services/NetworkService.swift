@@ -16,7 +16,7 @@ final class NetworkService {
         case delete = "DELETE"
     }
     private let baseUrl = Configuration.apiBaseURL.absoluteString
-    private let brandIdentifier = Configuration.brandId.absoluteString
+    private let brandIdentifier = Configuration.brandId
     var token: String?
    
     init(token: String? = nil) {
@@ -58,7 +58,7 @@ final class NetworkService {
                throw URLError(.unknown)
             }
             if 200..<300 ~= httpResponse.statusCode {
-//                print("responseData: \(String(data: responseData, encoding: .utf8) ?? "")")
+                print("responseData: \(String(data: responseData, encoding: .utf8) ?? "")")
                 guard let customDecoder else {
                     return try JSONDecoder().decode(T.self, from: responseData)
                 }

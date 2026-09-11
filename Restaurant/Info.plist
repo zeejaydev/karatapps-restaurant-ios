@@ -6,6 +6,12 @@
 	<string>$(API_BASE_URL)</string>
 	<key>BRAND</key>
 	<string>$(X_BRAND)</string>
+	<key>BRAND_WEBSITE</key>
+	<string>$(BRAND_WEBSITE)</string>
+	<key>CLOVER_SDK</key>
+	<string>$(CLOVER_SDK)</string>
+	<key>PAKMS_KEY</key>
+	<string>$(CLOVER_PAKMS_KEY)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>BricolageGrotesque_24pt-SemiBold.ttf</string>
